@@ -79,7 +79,28 @@ template code for this specification will be:
       </div>
     </div>
 Also you can use per module dojo.yml files to specify custom definition for layouts. You must place additional dojo.yml files into config folder of module. Files has folowwing structure
-    default: # same as global
+    default: # same as global, but not required
     all: # same as default excepts theme block 
 > #### Warning!
-> Default directive is not required for this file. If you specify it here it will rewrite global specification
+> default directive is not required for this file. If you specify it here it will rewrite global specification
+Some dojo instances must be defined in layout.php of your application for dojo. You must put in head block the following code:
+    <?php echo dojo::init() ?>
+before </head> tag, and set theme with
+    <body class="<?php echo dojo::$theme ?>">
+To add javascript functions in onload action you may use
+    <?php dojo::addOnLoad('<your javascript code here>') ?>
+before `init()` is called.
+[[BR]]
+And at last to specify wich dojo widjets to use edit main.js file in `./web/js/dojo/dev` folder
+    example main.js listing:
+
+    dojo.provide("app.main");
+
+    dojo.require("dojo.cookie");
+    dojo.require("dojo.parser");
+
+    dojo.require("dijit.layout.BorderContainer");
+    dojo.require("dijit.layout.ContentPane");
+
+> questions and suggestions you can sent to sadikoff [at] gmail.com
+
