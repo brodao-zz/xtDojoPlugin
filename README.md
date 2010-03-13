@@ -83,6 +83,7 @@ Also you can use per module dojo.yml files to specify custom definition for layo
     all: # same as default excepts theme block 
 > #### Warning!
 > default directive is not required for this file. If you specify it here it will rewrite global specification
+
 Some dojo instances must be defined in layout.php of your application for dojo. You must put in head block the following code:
     <?php echo dojo::init() ?>
 before </head> tag, and set theme with
