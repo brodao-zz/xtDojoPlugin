@@ -25,9 +25,9 @@ After activation run clear cache symfony task.
 Now plugin is ready to configure dojo environment. You must run init task 
 from console like this:
     symfony dojo:init
-After that place Dojo SDK sources to generated directory. 
-By default it is: `<project_directory>/web/js/dojo/src/`
-default directory structure:
+After that place Dojo SDK sources to generated src directory. By default it is: `<project_directory>/web/js/dojo/src/`
+    default directory structure:
+
     web/
       ...
       js/
@@ -42,3 +42,5 @@ default directory structure:
             util/
             builder.js
 Now dojo is configured and you can start using it.
+Using plugin
+------------
