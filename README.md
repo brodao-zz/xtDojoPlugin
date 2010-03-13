@@ -78,3 +78,8 @@ template code for this specification will be:
         <h1>I'm more content!</h1>
       </div>
     </div>
+Also you can use per module dojo.yml files to specify custom definition for layouts. You must place additional dojo.yml files into config folder of module. Files has folowwing structure
+    default: # same as global
+    all: # same as default excepts theme block 
+> #### Warning!
+> Default directive is not required for this file. If you specify it here it will rewrite global specification
