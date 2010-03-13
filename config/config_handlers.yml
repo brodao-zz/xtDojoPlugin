@@ -1,6 +1,0 @@
-# configure symfony to handle dojo.yml files
-modules/*/config/dojo.yml:
-  class: xtDojoConfigHandler
-  file: %SF_PLUGINS_DIR%/xtDojoPlugin/lib/config/xtDojoConfigHandler.class.php
-  param:
-    prefix: dojo_
