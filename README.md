@@ -9,3 +9,16 @@ Requirements
 
 Installation
 ------------
+At first, you need to download or checkout plugin sources. Then to install plugin into project, 
+move xtDojoPlugin into plugin directory and activate it.
+`
+// <project_directory>/config/ProjectConfiguration.class.php
+
+...
+public function setup() {
+...
+$this->enablePlugins('xtDojoPlugin');
+...
+}
+...
+`
