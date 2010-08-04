@@ -5,7 +5,7 @@
  * @package xtDojoPlugin
  * @subpackage task
  * @author Sadikov Vladimir aka DMC <sadikoff@gmail.com>
- * @version 0.9alfa
+ * @version 1.5alfa
  */
 class xtDojoBuildTask extends sfBaseTask
 {
@@ -48,13 +48,15 @@ EOF;
 
     $fileSystem = new xtDojoFileSystem($this->dispatcher, $this->formatter);
 
-    $fullPaths = sfConfig::get('xtDojo_fullPath');
+    $paths = sfConfig::get('xtDojo_fullPath');
+    $webDir = sfConfig::get('sf_web_dir');
+
+    $builder = $webDir.'/js/dojo/dojoBuild.'.(stristr(PHP_OS, 'WIN')?'bat':'sh');
 
     $profile = $fileSystem->generateProfile();
 
-    $cmd = 'java -classpath ../shrinksafe/js.jar:../shrinksafe/shrinksafe.jar org.mozilla.javascript.tools.shell.Main build.js cssOptimize=comments action=clean,release mini=true optimize=shrinksafe expandProvide=true layerOptimize=shrinksafe profile=sf releaseDir='.$fullPaths['prod'].' version="'.$options['ver'].'" releaseName=""';
-    
-    $fileSystem->execute('cd '.$fullPaths['src'].sfConfig::get('xtDojo_buildScriptDir').' && '.$cmd, array($this,'logBuildInfo'), array($this,'logBuildError'));
+    $cmd = $builder.' cssOptimize=comments action=clean,release mini=true optimize=shrinksafe expandProvide=true layerOptimize=shrinksafe profileFile='.$profile.'  releaseDir='.$paths['prod'].' version="'.$options['ver'].'" releaseName=""';
+    $fileSystem->execute($cmd, array($this,'logBuildInfo'), array($this,'logBuildError'));
 
     $fileSystem->remove($profile);
 

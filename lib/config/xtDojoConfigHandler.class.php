@@ -5,7 +5,7 @@
  * @package xtDojoPlugin
  * @subpackage config
  * @author Sadikov Vladimir aka DMC <sadikoff@gmail.com>
- * @version 1.0
+ * @version 1.5
  */
 
 class xtDojoConfigHandler extends sfDefineEnvironmentConfigHandler

@@ -6,7 +6,7 @@
  * @package xtDojoPlugin
  * @subpackage config
  * @author Sadikov Vladimir aka DMC <sadikoff@gmail.com>
- * @version 1.0
+ * @version 1.5
  */
 
 class xtDojoPluginConfiguration extends sfPluginConfiguration
@@ -36,6 +36,8 @@ class xtDojoPluginConfiguration extends sfPluginConfiguration
         'dev'  => '/js/dojo/dev',
         'src'  => '/js/dojo/src'
       ),
+
+      'dojo_SDK_link' => 'http://download.dojotoolkit.org/release-{ver}/dojo-release-{ver}-src.tar.gz'
 
     );
 

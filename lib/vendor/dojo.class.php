@@ -5,7 +5,7 @@
  * @package xtDojoPlugin
  * @subpackage dojo
  * @author Sadikov Vladimir aka DMC <sadikoff@gmail.com>
- * @version 0.9alfa
+ * @version 1.5
  */
 
 class dojo {
@@ -19,6 +19,11 @@ class dojo {
    * @var array
    */
   protected static $_dijits = array();
+  /**
+   * Registered programmatic queries
+   * @var array
+   */
+  protected static $_queries = array();
   /**
    * Actions to perform on window load
    * @var array
@@ -99,6 +104,38 @@ class dojo {
     }
   }
   /**
+   * Add a programmatic query
+   *
+   * @param  string $id
+   * @param  array $params
+   *
+   * @return void
+   */
+  public static function addQuery($id, $select, array $params) {
+    self::$_queries[$id] = array(
+            'select' => $select,
+            'params' => $params
+    );
+  }
+  /**
+   * Add multiple queries at once
+   *
+   * Expects an array of $id => $select, array $params pairs
+   *
+   * @param  array $dijits
+   *
+   * @return void
+   */
+  public static function addQueries(array $queries, array $viewQueries) {
+    foreach ($viewQueries as $view) {
+      if (isset($queries[$view])) {
+        foreach ($queries[$view] as $id => $params) {
+          self::addQuery($id, $params['select'], $params['params']);
+        }
+      }
+    }
+  }
+  /**
    * Retrieve all dijits
    *
    * Returns dijits as an array of assoc arrays
@@ -107,6 +144,16 @@ class dojo {
    */
   public static function getDijits() {
     return json_encode(array_values(self::$_dijits));
+  }
+  /**
+   * Retrieve all queries
+   *
+   * Returns queries as an array of assoc arrays
+   *
+   * @return array
+   */
+  public static function getQueries() {
+    return json_encode(array_values(self::$_queries));
   }
   /**
    *  Adds custom JavaScript in loader
@@ -125,17 +172,27 @@ class dojo {
    */
   public static function getLoader() {
     if (!self::$_loaderRegistered) {
-      $js =<<<EOJ
-  dojo.forEach(dijits, function(info) {
-    var n = dojo.byId(info.id);
-    if (null != n) {
-      dojo.attr(n, dojo.mixin({ id: info.id }, info.params));
-    }
-  });
+      $digits = self::getDijits();
+      $queries = self::getQueries();
+      $js = '';
+      if(!empty($digits))
+      {
+        $js .=<<<EOJ
+  dojo.forEach(dijits, function(info){var n = dojo.byId(info.id);if(null != n) dojo.attr(n, dojo.mixin({id: info.id}, info.params));});
+EOJ;
+        self::addJavaScript('var dijits = '.self::getDijits().';');
+      }
+      if(!empty($queries))
+      {
+        $js .=<<<EOJ
+  dojo.forEach(queries, function(info){dojo.forEach( dojo.query(info.select), function(selectTag){dojo.attr(selectTag, dojo.mixin({}, info.params));})});
+EOJ;
+        self::addJavaScript('var queries = '.self::getQueries().';');
+      }
+      $js .=<<<EOJ
   dojo.parser.parse();
 EOJ;
       self::prependOnLoad($js);
-      self::addJavaScript('var dijits = '.self::getDijits().';');
       self::$_loaderRegistered = true;
     }
   }
