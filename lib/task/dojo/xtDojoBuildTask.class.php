@@ -71,19 +71,26 @@ EOF;
    */
   public function logBuildInfo($message)
   {
-    if (strlen($message) > 1) {
+    if (strlen($message) > 1)
+    {
       $lines = explode("\n", $message);
-      foreach ($lines as $line) {
-        if (strlen($line) > 1) {
+      foreach ($lines as $line)
+      {
+        if (strlen($line) > 1)
+        {
           $lineArray = explode(':',$line);
-          if ( count( $lineArray ) == 1 ) {
+          if (count($lineArray) == 1)
+          {
             $this->logSection('Info', $lineArray[0]);
-          } elseif ( count( $lineArray ) > 2 ) {
+          }
+          else if (count($lineArray) > 2)
+          {
             $this->logSection(trim($lineArray[1]), trim($lineArray[2]));
-          } else {
+          }
+          else
+          {
             $this->logSection(trim($lineArray[0]), trim($lineArray[1]));
           }
-          
         }
       }
     }
@@ -97,13 +104,17 @@ EOF;
    */
   public function logBuildError($message)
   {
-    if (strlen($message) > 1) {
+    if (strlen($message) > 1)
+    {
       $lines = explode("\n", $message);
-      foreach ($lines as $line) {
-        if (strlen($line) > 1) {
+      foreach ($lines as $line)
+      {
+        if (strlen($line) > 1)
+        {
           $this->logSection('ERROR', $line, null, 'ERROR');
         }
       }
     }
   }
+
 }

@@ -90,21 +90,22 @@ EOF;
 
     foreach ($paths as $key => $path)
     {
-      if ($key == 'prod')
-        continue;
-      if($flag)
+      if ($key == 'prod') continue;
+      
+      if ($flag)
       {
         $files = sfFinder::type('file')->in($path);
         $dirs  = sfFinder::type('dir')->in($path);
-        $fileSystem->remove ($files);
-        $fileSystem->remove ($dirs);
-        $fileSystem->remove ($path);
+
+        $fileSystem->remove($files);
+        $fileSystem->remove($dirs);
+        $fileSystem->remove($path);
       }
-      $fileSystem->mkdirs ($path);
+      $fileSystem->mkdirs($path);
     }
 
     $mainJSFile = $paths['dev'].'/main.js';
-    if(!is_file($mainJSFile))
+    if (!is_file($mainJSFile))
     {
       $fileSystem->generateMain();
     }
@@ -113,9 +114,9 @@ EOF;
       $this->logSection('dojo', 'Dojo main.js allready exists.',null,'ERROR');
     }
 
-    if(function_exists('curl_init'))
+    if (function_exists('curl_init'))
     {
-      if($options['get-src'])
+      if ($options['get-src'])
       {
         $dojoSDK = array(
             'downloadLink'  => str_replace('{ver}', $options['ver'], sfConfig::get('dojo_SDK_link')),
@@ -123,13 +124,13 @@ EOF;
             'excludePath'   => 'dojo-release-'.$options['ver'].'-src'
         );
 
-        if(!file_exists($dojoSDK['localFilename']))
+        if (!file_exists($dojoSDK['localFilename']))
         {
           $this->logSection('dojo', 'Sources archive not found. Initializing download....');
           $fileSystem->getSources($dojoSDK['downloadLink'],$dojoSDK['localFilename']);
         }
 
-        if(!file_exists($installFile))
+        if (!file_exists($installFile))
         {
           $fileSystem->extractSources($dojoSDK['localFilename'], $paths['src'], $dojoSDK['excludePath']);
         }
@@ -141,14 +142,19 @@ EOF;
     }
     else
     {
-      $this->logSection('dojo', 'You must activate php_curl module before running this task with get-src option');
+      $this->logSection('dojo', 'You must activate php_curl module before running this task with get-src option',null,'ERROR');
     }
     
 
     $fileSystem->generateBuilder($flag);
-    if(!$flag)
+    if (!$flag)
+    {
       $this->logBlock('Project configured. Now you must put dojo SDK sources(dojo,dojox,dijit,util folders) in '.$webDir.'/js/dojo/src folder.', 'INFO');
+    }
     else
+    {
       $this->logBlock('Project reconfigured. All data was delted. Now you must put dojo SDK sources(dojo,dojox,dijit,util folders) in '.$webDir.'/js/dojo/src folder, and rebuild dojo if needed.', 'INFO');
+    }
   }
+
 }

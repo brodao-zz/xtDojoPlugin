@@ -21,11 +21,11 @@ class xtDojoFilter extends sfFilter
     $response = $this->context->getResponse();
 
     $moduleName = $this->context->getModulename();
-    require($this->context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/dojo.yml'));
+    require $this->context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/dojo.yml');
 
     $dojoTheme = sfConfig::get('dojo_theme', array('name' => 'tundra'));
 
-    if($this->isFirstCall())
+    if ($this->isFirstCall())
     {
       $dojoDijits     = sfConfig::get('dojo_dijits', array());
       $dojoQueries    = sfConfig::get('dojo_queries', array());
@@ -59,15 +59,20 @@ class xtDojoFilter extends sfFilter
   {
     $dojoPaths = $this->getDojoPaths();
 
-    if('dev' == sfConfig::get('sf_dojo_env','dev')) {
+    if ('dev' == sfConfig::get('sf_dojo_env','dev'))
+    {
       $cssPath = $dojoPaths['src'];
-    } else {
+    }
+    else
+    {
       $cssPath = $dojoPaths['prod'];
     }
 
     $response->addStylesheet($cssPath.'/dijit/themes/'.$dojoTheme['name'].'/'.$dojoTheme['name'].'.css');
-    if ( array_key_exists('css', $dojoTheme) && is_array($dojoTheme['css']) && !empty($dojoTheme['css'])) {
-      foreach ($dojoTheme['css'] as $style) {
+    if ( array_key_exists('css', $dojoTheme) && is_array($dojoTheme['css']) && !empty($dojoTheme['css']))
+    {
+      foreach ($dojoTheme['css'] as $style)
+      {
         $response->addStylesheet($cssPath.$style);
       }
     }
@@ -83,10 +88,13 @@ class xtDojoFilter extends sfFilter
   {
     $dojoPaths = $this->getDojoPaths();
 
-    if('dev' == sfConfig::get('sf_dojo_env','dev')) {
+    if ('dev' == sfConfig::get('sf_dojo_env','dev'))
+    {
       $dojoJS = $dojoPaths['src'].'/dojo/dojo.js';
       $mainJS = $dojoPaths['dev'].'/main.js';
-    } else {
+    }
+    else
+    {
       $dojoJS = $dojoPaths['prod'].'/dojo/dojo.js';
       $mainJS = $dojoPaths['prod'].'/app/main.js';
     }

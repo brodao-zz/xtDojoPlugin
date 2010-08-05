@@ -35,33 +35,46 @@ class xtDojoConfigHandler extends sfDefineEnvironmentConfigHandler
 
     $countFiles = count($configFiles);
 
-    for ( $i = 0; $i < $countFiles; $i++ ) {
+    for ( $i = 0; $i < $countFiles; $i++ )
+    {
       $configuration = self::parseYaml($configFiles[$i]);
 
-      if ( $i == 0 ) {
-        foreach ($configuration as $key => $value) {
+      if ( $i == 0 )
+      {
+        foreach ($configuration as $key => $value)
+        {
           $config = array_merge($config, $value);
         }
-      } else {
-        foreach ($configuration as $key => $value) {
-          if ($key == 'default') {
-            foreach ($value as $key_ => $value_) {
+      }
+      else
+      {
+        foreach ($configuration as $key => $value)
+        {
+          if ($key == 'default')
+          {
+            foreach ($value as $key_ => $value_)
+            {
               $config[$key_] = $value_;
             }
-          } else {
-            foreach ($value as $key_ => $value_) {
+          }
+          else
+          {
+            foreach ($value as $key_ => $value_)
+            {
               is_array($config[$key_]) && key_exists($key_, $config) ? null : $config[$key_] = array();
               is_array($value_) ? null : $value_ = array();
-              if ( $key_ == 'theme' ) {
+              if ( $key_ == 'theme' )
+              {
                 $config[$key_] = array_merge($config[$key_],$value_);
-              } else {
+              }
+              else
+              {
                 $config[$key_] = array_merge_recursive($config[$key_],$value_);
               }
             }
           }
         }
       }
-      
     }
 
     $values = array();

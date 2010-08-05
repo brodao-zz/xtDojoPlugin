@@ -66,11 +66,11 @@ EOF;
     }
 
     // we have to load all the plugin configuraton
-    $this->configuration->loadPlugins( );
+    $this->configuration->loadPlugins();
     
     $dojoDirs = sfConfig::get('xtDojo_fullPath');
     $mdFile = $dojoDirs['dev'].'/main.js';
-    if(!is_file($mdFile))
+    if (!is_file($mdFile))
     {
       throw new sfCommandException('You must run [./sumfony dojo:init] before using this command.');
     }
@@ -100,7 +100,7 @@ EOF;
 
     $dojoConfig = $yaml->dump($yamlConfigurations['dojo'],3);
 
-    if(!file_exists($appDojoConfig) || $options['force'])
+    if (!file_exists($appDojoConfig) || $options['force'])
     {
       $fileSystem->touch($appDojoConfig);
       file_put_contents($appDojoConfig, $dojoConfig);
@@ -116,7 +116,7 @@ EOF;
 
     $this->logSection('dojo', 'Trying to configure filters.');
     $filters = file_get_contents($appFiltersConfig);
-    if(!strstr($filters, 'dojo'))
+    if (!strstr($filters, 'dojo'))
     {
       $filters = str_replace('execution:', $filtersConfig.'execution:', $filters);
       file_put_contents($appFiltersConfig, $filters);
@@ -128,9 +128,13 @@ EOF;
       $flag = true;
     }
 
-    if(true===$flag)
+    if (true===$flag)
+    {
       $this->logBlock('Probably dojo is allready configured for selected application. Please checkout README for the configuration details.', 'ERROR');
+    }
     else
+    {
       $this->logBlock('Everything is configured. You may now use dojo in selected application of your project.', 'INFO');
+    }
   }
 }

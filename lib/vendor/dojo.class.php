@@ -8,7 +8,8 @@
  * @version 1.5
  */
 
-class dojo {
+class dojo
+{
   /**
    *  Theme variable
    * @var string
@@ -46,8 +47,10 @@ class dojo {
    *
    * @return void
    */
-  public static function addOnLoad($callback) {
-    if (!in_array($callback, self::$_dojoOnLoad, true)) {
+  public static function addOnLoad($callback)
+  {
+    if (!in_array($callback, self::$_dojoOnLoad, true))
+    {
       self::$_dojoOnLoad[] = '  '.$callback;
     }
   }
@@ -58,8 +61,10 @@ class dojo {
    *
    * @return void
    */
-  public static function prependOnLoad($callback) {
-    if (!in_array($callback, self::$_dojoOnLoad, true)) {
+  public static function prependOnLoad($callback)
+  {
+    if (!in_array($callback, self::$_dojoOnLoad, true))
+    {
       array_unshift(self::$_dojoOnLoad, $callback);
     }
   }
@@ -70,7 +75,8 @@ class dojo {
    *
    * @return void
    */
-  public static function setTheme($theme) {
+  public static function setTheme($theme)
+  {
     self::$theme = $theme;
   }
   /**
@@ -81,11 +87,9 @@ class dojo {
    *
    * @return void
    */
-  public static function addDijit($id, array $params) {
-    self::$_dijits[$id] = array(
-            'id'     => $id,
-            'params' => $params,
-    );
+  public static function addDijit($id, array $params)
+  {
+    self::$_dijits[$id] = array('id' => $id, 'params' => $params);
   }
   /**
    * Add multiple dijits at once
@@ -96,9 +100,12 @@ class dojo {
    *
    * @return void
    */
-  public static function addDijits(array $dijits, array $viewDijits) {
-    foreach ($viewDijits as $view) {
-      foreach ($dijits[$view] as $id => $params) {
+  public static function addDijits(array $dijits, array $viewDijits)
+  {
+    foreach ($viewDijits as $view)
+    {
+      foreach ($dijits[$view] as $id => $params)
+      {
         self::addDijit($id, $params);
       }
     }
@@ -107,15 +114,14 @@ class dojo {
    * Add a programmatic query
    *
    * @param  string $id
-   * @param  array $params
+   * @param  string $select
+   * @param  array  $params
    *
    * @return void
    */
-  public static function addQuery($id, $select, array $params) {
-    self::$_queries[$id] = array(
-            'select' => $select,
-            'params' => $params
-    );
+  public static function addQuery($id, $select, array $params)
+  {
+    self::$_queries[$id] = array('select' => $select, 'params' => $params);
   }
   /**
    * Add multiple queries at once
@@ -126,10 +132,14 @@ class dojo {
    *
    * @return void
    */
-  public static function addQueries(array $queries, array $viewQueries) {
-    foreach ($viewQueries as $view) {
-      if (isset($queries[$view])) {
-        foreach ($queries[$view] as $id => $params) {
+  public static function addQueries(array $queries, array $viewQueries)
+  {
+    foreach ($viewQueries as $view)
+    {
+      if (isset($queries[$view]))
+      {
+        foreach ($queries[$view] as $id => $params)
+        {
           self::addQuery($id, $params['select'], $params['params']);
         }
       }
@@ -140,20 +150,24 @@ class dojo {
    *
    * Returns dijits as an array of assoc arrays
    *
-   * @return array
+   * @return string|false
    */
-  public static function getDijits() {
-    return json_encode(array_values(self::$_dijits));
+  public static function getDijits()
+  {
+    $digitsArray = array_values(self::$_dijits);
+    return !empty($digitsArray)?json_encode($digitsArray):false;
   }
   /**
    * Retrieve all queries
    *
    * Returns queries as an array of assoc arrays
    *
-   * @return array
+   * @return string|false
    */
-  public static function getQueries() {
-    return json_encode(array_values(self::$_queries));
+  public static function getQueries()
+  {
+    $queriesArray = array_values(self::$_queries);
+    return !empty($queriesArray)?json_encode($queriesArray):false;
   }
   /**
    *  Adds custom JavaScript in loader
@@ -162,7 +176,8 @@ class dojo {
    *
    * @return void
    */
-  public static function addJavaScript($js) {
+  public static function addJavaScript($js)
+  {
     self::$_js[] = $js;
   }
   /**
@@ -170,22 +185,28 @@ class dojo {
    *
    * @return void
    */
-  public static function getLoader() {
-    if (!self::$_loaderRegistered) {
+  public static function getLoader()
+  {
+    if (!self::$_loaderRegistered)
+    {
       $digits = self::getDijits();
       $queries = self::getQueries();
       $js = '';
-      if(!empty($digits))
+
+      if (false !== $digits)
       {
         $js .=<<<EOJ
   dojo.forEach(dijits, function(info){var n = dojo.byId(info.id);if(null != n) dojo.attr(n, dojo.mixin({id: info.id}, info.params));});
+
 EOJ;
         self::addJavaScript('var dijits = '.self::getDijits().';');
       }
-      if(!empty($queries))
+
+      if (false !== $queries)
       {
         $js .=<<<EOJ
-  dojo.forEach(queries, function(info){dojo.forEach( dojo.query(info.select), function(selectTag){dojo.attr(selectTag, dojo.mixin({}, info.params));})});
+  dojo.forEach(queries, function(info){dojo.forEach(dojo.query(info.select), function(selectTag){dojo.attr(selectTag, dojo.mixin({}, info.params));})});
+
 EOJ;
         self::addJavaScript('var queries = '.self::getQueries().';');
       }
@@ -201,8 +222,10 @@ EOJ;
    *
    * @return string
    */
-  public static function init() {
-    if (!empty(self::$_dijits)) {
+  public static function init()
+  {
+    if (!empty(self::$_dijits)||!empty(self::$_queries))
+    {
       self::getLoader();
     }
 

@@ -40,7 +40,8 @@ class xtDojoFileSystem extends sfFilesystem
     );
 
     $process = proc_open($cmd, $descriptorspec, $pipes);
-    if (!is_resource($process)) {
+    if (!is_resource($process))
+    {
       throw new RuntimeException('Unable to execute the command.');
     }
 
@@ -49,24 +50,32 @@ class xtDojoFileSystem extends sfFilesystem
 
     $output = '';
     $err = '';
-    while (!feof($pipes[1])) {
-      foreach ($pipes as $key => $pipe) {
+    while (!feof($pipes[1]))
+    {
+      foreach ($pipes as $key => $pipe)
+      {
         // default line if (!$line = fread($pipe, 128))
         // was rewriten in case to provide more beautiful java output
-        if (!$line = fread($pipe, 3072)) {
+        if (!$line = fread($pipe, 3072))
+        {
           continue;
         }
 
-        if (1 == $key) {
+        if (1 == $key)
+        {
           // stdout
           $output .= $line;
-          if ($stdoutCallback){
+          if ($stdoutCallback)
+          {
             call_user_func($stdoutCallback, $line);
           }
-        } else {
+        }
+        else
+        {
           // stderr
           $err .= $line;
-          if ($stderrCallback) {
+          if ($stderrCallback)
+          {
             call_user_func($stderrCallback, $line);
           }
         }
@@ -78,7 +87,8 @@ class xtDojoFileSystem extends sfFilesystem
     fclose($pipes[1]);
     fclose($pipes[2]);
 
-    if (($return = proc_close($process)) > 0) {
+    if (($return = proc_close($process)) > 0)
+    {
       throw new RuntimeException('Problem executing command.', $return);
     }
 
@@ -185,12 +195,16 @@ EOF;
     $ext = stristr(PHP_OS, 'WIN')?'bat':'sh';
 
     $dojoBuilderFile = sfConfig::get('sf_web_dir').'/js/dojo/dojoBuild.'.$ext;
-    if($flag) $this->remove($dojoBuilderFile);
+    if ($flag)
+    {
+      $this->remove($dojoBuilderFile);
+    }
 
-    if(!is_file($dojoBuilderFile))
+    if (!is_file($dojoBuilderFile))
     {
       $this->touch($dojoBuilderFile);
-      if ($ext == 'sh') {
+      if ($ext == 'sh')
+      {
         $this->chmod($dojoBuilderFile, 0755);
         $dojoBuilderContent = sprintf(<<<EOF
 cd %s/util/buildscripts/
