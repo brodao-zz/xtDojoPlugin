@@ -55,7 +55,7 @@ Requirements
 
   * Setup application you want to use dojo
 
-       symfony dojo:use-app backend
+        symfony dojo:use-app backend
 
 
 ## Using plugin ##
