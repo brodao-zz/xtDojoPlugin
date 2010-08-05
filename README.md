@@ -35,7 +35,7 @@ Requirements
 
   * Initialize plugin
 
-       symfony dojo:init --get-src
+        symfony dojo:init --get-src
 
   It's strongly recomended to use `--get-src` option. With it plugin will download dojo sources and extract it to default directories. You will recieve following structure:
 
