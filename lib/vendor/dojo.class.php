@@ -41,6 +41,11 @@ class dojo
    */
   protected static $_js = array();
   /**
+   * Turn on/off dojo.parser.parse() call
+   * @var bool
+   */
+  protected static $_doParser = true;
+  /**
    * Add a script to execute onLoad
    *
    * @param  string $callback
@@ -210,9 +215,11 @@ EOJ;
 EOJ;
         self::addJavaScript('var queries = '.self::getQueries().';');
       }
+      if (self::$_doParser) {
       $js .=<<<EOJ
   dojo.parser.parse();
 EOJ;
+      }
       self::prependOnLoad($js);
       self::$_loaderRegistered = true;
     }
@@ -249,4 +256,14 @@ EOF
     return $html;
   }
 
+   /**
+   *  Turn on/off dojo.parser.parse call
+   *
+   * @param bool $doParse
+   *
+   * @return void
+   */
+  public static function setDojoParser($doParser) {
+     self::$_doParser = $doParser;
+   }
 }

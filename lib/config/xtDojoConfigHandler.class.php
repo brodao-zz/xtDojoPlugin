@@ -61,6 +61,7 @@ class xtDojoConfigHandler extends sfDefineEnvironmentConfigHandler
           {
             foreach ($value as $key_ => $value_)
             {
+              if ($config[$key_]) {
               is_array($config[$key_]) && key_exists($key_, $config) ? null : $config[$key_] = array();
               is_array($value_) ? null : $value_ = array();
               if ( $key_ == 'theme' )
@@ -75,6 +76,7 @@ class xtDojoConfigHandler extends sfDefineEnvironmentConfigHandler
           }
         }
       }
+    }
     }
 
     $values = array();

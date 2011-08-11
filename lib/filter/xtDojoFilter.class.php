@@ -19,6 +19,7 @@ class xtDojoFilter extends sfFilter
   public function execute(sfFilterChain $filterChain)
   {
     $response = $this->context->getResponse();
+    $request = $this->context->getRequest();
 
     $moduleName = $this->context->getModulename();
     require $this->context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/dojo.yml');
@@ -36,6 +37,7 @@ class xtDojoFilter extends sfFilter
 
       dojo::addDijits($dojoDijits, $dojoView);
       dojo::addQueries($dojoQueries, $dojoView);
+      dojo::setDojoParser(!($request->isXmlHttpRequest()));
     }
 
     dojo::setTheme($dojoTheme['name']);
